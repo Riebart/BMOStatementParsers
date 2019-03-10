@@ -14,7 +14,7 @@ Open the CSV in your favourite spreadsheet program, or continue to process as yo
 
 Simply put, PDF eStatements are available from the beginning of your account history for all accounts, including PLOCs, TFSAs, bank accounts, and credit cards.
 
-Account transaction history is available for 90 days for credit cards and 24 months for other accounts, but is only viewable online. Downloading account details only contain 90 days at a time.
+Account transaction history is available for 90 days for credit cards and 24 months for other accounts, but is only viewable online. Downloading account details only gets you the most recent 90 days, despite the fact that more is obviously available.
 
 ## Supported Statement Types
 
