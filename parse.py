@@ -17,6 +17,7 @@ class StatementParser(object):
     FORMAT_FILTER = None
     COLUMN_SEPARATOR = None
     YEAR_TOKEN = None
+    SOURCE = None
 
     @staticmethod
     def statement_date(text):
@@ -127,6 +128,11 @@ class BMOSavingsBuilderAccount(BMOStandardAccount):
     SOURCE = "BMO Savings Account"
 
 
+class BMOSmartSaverAccount(BMOStandardAccount):
+    IDENTIFIER_REGEX = "Smart Saver Account # [0-9]+[0-9 ]*"
+    SOURCE = "BMO Savings Account"
+
+
 class BMOPersonalLineOfCredit(StatementParser):
     IDENTIFIER_REGEX = "YOUR PERSONAL LINE OF CREDIT"
     LINE_SELECTOR = r"^[ 0-9]*(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)"
@@ -226,7 +232,7 @@ class BMOWorldMasterCard(StatementParser):
 
 
 PARSERS = [
-    BMOPrimaryChequingAccount, BMOSavingsBuilderAccount,
+    BMOPrimaryChequingAccount, BMOSavingsBuilderAccount, BMOSmartSaverAccount,
     BMOPersonalLineOfCredit, BMOWorldMasterCard
 ]
 
