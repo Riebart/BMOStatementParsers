@@ -1,12 +1,22 @@
 #!/usr/bin/env python3
 
-import re
-import sys
-import subprocess
 import argparse
-import json
-import time
 import csv
+import hashlib
+import json
+import re
+import subprocess
+import sys
+import time
+
+
+def uuid_format_hash(hash_hex):
+    """
+    Format a Sha256 hash as UUID's: 8-4-4-4-12
+    """
+    m = re.match(r"^(.{8})(.{4})(.{4})(.{4})(.{12})", hash_hex)
+    return "%s-%s-%s-%s-%s" % (m.group(1), m.group(2), m.group(3), m.group(4),
+                               m.group(5))
 
 
 class StatementParser(object):
@@ -243,6 +253,11 @@ def main():
         """Parse a supported PDF input file into a CSV of transactions.""")
     parser.add_argument(
         "--file", help="""PDF file to parse""", required=True, default=None)
+    parser.add_argument(
+        "--id",
+        help="""Add identifiers to each row as the first column""",
+        action="store_true",
+        default=False)
     parsed_args = parser.parse_args()
 
     with open(parsed_args.file, "rb") as fp:
@@ -259,8 +274,15 @@ def main():
         if parser.check(text):
             rows = parser.parse(text)
             w = csv.writer(sys.stdout)
-            w.writerow(parser.HEADERS + ["RecordSource"])
+            w.writerow((["Id"] if parsed_args.id else []) + parser.HEADERS +
+                       ["RecordSource"])
             for row in rows:
+                if parsed_args.id:
+                    row = [
+                        uuid_format_hash(
+                            hashlib.sha256(
+                                str(row).encode("utf-8")).hexdigest())
+                    ] + row
                 w.writerow(row)
 
 
