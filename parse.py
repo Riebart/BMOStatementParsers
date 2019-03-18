@@ -276,12 +276,13 @@ def main():
             w = csv.writer(sys.stdout)
             w.writerow((["Id"] if parsed_args.id else []) + parser.HEADERS +
                        ["RecordSource"])
-            for row in rows:
+            for i in range(len(rows)):
+                row = rows[i]
                 if parsed_args.id:
                     row = [
                         uuid_format_hash(
                             hashlib.sha256(
-                                str(row).encode("utf-8")).hexdigest())
+                                str([i] + row).encode("utf-8")).hexdigest())
                     ] + row
                 w.writerow(row)
 
